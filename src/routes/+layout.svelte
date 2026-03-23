@@ -9,9 +9,9 @@
 
 <!-- Specific values may be subject to change-->
 <header class="flex items-center px-6 py-4 gap-6 bg-gray-100 shadow-md" >  
-	<div>
+	<a href='/'>
 		<img src="" alt="One Must Imagine A Logo Here" />
-	</div>
+	</a>
 
 	<div class="flex-1 flex justify-center">
 		<div class="flex items-center bg-gray-200 rounded-full px-4 py-3 w-full max-w-2x1">
