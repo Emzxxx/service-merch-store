@@ -1,5 +1,6 @@
 <script lang="ts">
     import placeholder from "../../../../static/placeholder.svg";
+    import { goto } from "$app/navigation";
 
     let { image, price, name } = $props<{
         image: string | null; // path to image in Supabase
@@ -10,7 +11,7 @@
     let imageUrl = $derived(image ?? placeholder);
 </script>
 
-<div class="flex flex-col overflow-hidden rounded-lg bg-white pb-4">
+<div class="my-4 mx-5 flex flex-col overflow-hidden rounded-lg bg-white pb-4">
     <img 
         src={imageUrl} 
         onerror={() => { imageUrl = placeholder }}
@@ -21,10 +22,13 @@
 
     <div class="p-4">
         <h3 class="text-lg font-medium">{name}</h3>
-        <p class="text-gray-600">₱{price.toLocaleString()}</p>
+        <p class="text-gray-600">₱{price.toFixed(2)}</p>
     </div>
 
-    <button class="cursor-pointer w-2/3 mx-auto mt-auto text-sm px-auto py-1 border border-gray-300 text-gray-700 rounded-full hover:bg-black hover:text-white transition-colors">
+    <button 
+        class="cursor-pointer w-2/3 mx-auto mt-auto text-sm px-auto py-1 border border-gray-300 text-gray-700 rounded-full hover:bg-black hover:text-white transition-colors"
+        onclick={() => goto('/add-to-cart')} // change accordingly
+        >
         Buy
     </button>
 </div>
