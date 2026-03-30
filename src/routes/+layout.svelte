@@ -12,7 +12,7 @@
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
 <!-- Specific values may be subject to change-->
-<header class="flex items-center px-6 py-4 gap-6 bg-gray-100 shadow-lg/25" >  
+<header class="flex items-center px-6 py-4 gap-6 bg-gray-100 shadow-lg/25 sticky top-0" >  
 	<div class="flex-1">
 		<a href='/'>
 			<img src={CSI_Logo} alt="CSI Logo" />

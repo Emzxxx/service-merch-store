@@ -4,13 +4,13 @@
     import FilterIcon from '$lib/assets/filter.svg';
     import Line from '$lib/assets/line.svg';
 
-    let filterType1 = {
+    let filterType1: Record<string, boolean>  = {
         "Keychains": false,
         "Stickers": false,
         "Prints": false,
         "Accessories": false
     };
-    let filterType2 = {
+    let filterType2: Record<string, boolean> = {
         "Filter 1": false,
         "Filter 2": false,
         "Filter 3": false,
@@ -28,7 +28,7 @@
     </div>
 
     <img src={Line} />
-
+    
     <!-- Filter -->
     <div class="mt-3 mb-6 flex items-center gap-x-2">
         <img src={FilterIcon} class="w-[24px] h-[24px] align-middle" alt="Filter Icon" />
