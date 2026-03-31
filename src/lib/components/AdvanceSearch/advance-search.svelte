@@ -4,24 +4,24 @@
     import DownButton from '$lib/assets/down-button.svg';
     import RightButton from '$lib/assets/right-button.svg';
 
-    let filterType1: Record<string, boolean>  = {
+    let filterType1: Record<string, boolean>  = $state({
         "Keychains": false,
         "Stickers": false,
         "Prints": false,
         "Accessories": false
-    };
+    });
 
-    let filterType2: Record<string, boolean> = {
+    let filterType2: Record<string, boolean> = $state({
         "Filter 1": false,
         "Filter 2": false,
         "Filter 3": false,
         "Filter 4": false
-    };
+    });
 
-    let showSortOptions = $state(false);
-    let showNameOptions = $state(false);
-    let showPriceOptions = $state(false);
-    let selectedSort = $state(""); // for backend
+    let showSortOptions = $state<boolean>(false);
+    let showNameOptions = $state<boolean>(false);
+    let showPriceOptions = $state<boolean>(false);
+    let selectedSort = $state<string>(""); // for backend
 
     function handleClickOutside(event: MouseEvent) {
         const sidebar = document.querySelector('.sort-by-container');
