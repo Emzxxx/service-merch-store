@@ -4,19 +4,19 @@
     import DownButton from '$lib/assets/down-button.svg';
     import RightButton from '$lib/assets/right-button.svg';
 
-    let filterType1: Record<string, boolean>  = {
+    let filterType1: Record<string, boolean>  = $state({
         "Keychains": false,
         "Stickers": false,
         "Prints": false,
         "Accessories": false
-    };
+    });
 
-    let filterType2: Record<string, boolean> = {
+    let filterType2: Record<string, boolean> = $state({
         "Filter 1": false,
         "Filter 2": false,
         "Filter 3": false,
         "Filter 4": false
-    };
+    });
 
     let showSortOptions = $state(false);
     let showNameOptions = $state(false);
