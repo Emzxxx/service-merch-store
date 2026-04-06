@@ -1,6 +1,10 @@
 import { supabase } from '$lib/supabaseClient';
+import type { Product, Category } from '$lib/types'
 
-export async function load() {
+export async function load(): Promise<{
+	products: Product[],
+	categories: Category[]
+}> {
 	
 	const [ variantResult, categoryResult ] = await Promise.all([
 		supabase
@@ -42,7 +46,7 @@ export async function load() {
 
 	//console.log('RAW FIRST ROW:', JSON.stringify(data?.[0], null, 2));
 
-	const products = (variantData ?? []).map((variant) => {
+	const products: Product[] = (variantData ?? []).map((variant) => {
 		const product = Array.isArray(variant.Products)
 			? variant.Products[0]
 			: variant.Products;
@@ -59,7 +63,7 @@ export async function load() {
 		};
 	});
 
-	const categories = (categoryData ?? []).map((categ) => ({
+	const categories: Category[] = (categoryData ?? []).map((categ) => ({
 		id: categ.id,
 		category: categ.Category
 	}));

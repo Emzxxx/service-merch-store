@@ -3,9 +3,11 @@
     import FilterIcon from '$lib/assets/filter.svg';
     import DownButton from '$lib/assets/down-button.svg';
     import RightButton from '$lib/assets/right-button.svg';
-
-    let { filterType1, selectedFilters = $bindable() } = $props()
+	import type { Category } from '$lib/types';
     
+    let { categoryFilter, selectedFilters = $bindable() }: { categoryFilter: Category[], selectedFilters: string[] } = $props()
+    
+
     let showSortOptions = $state<boolean>(false);
     let showNameOptions = $state<boolean>(false);
     let showPriceOptions = $state<boolean>(false);
@@ -115,7 +117,7 @@
     <!-- Filter Type 1 -->
     <div class="mb-6">
         <h3 style="font-family: 'Inter', sans-serif; font-weight: 400; color: #707070; font-size: 16px;" class="mb-2">Categories</h3>
-        {#each filterType1 as item (item.id)}
+        {#each categoryFilter as item (item.id)}
             <label class="block mb-1" style="font-family: 'Inter', sans-serif; font-weight: 400; color: #707070; font-size: 14px;">
                 <input type="checkbox" bind:group={selectedFilters} value={item.category} class="ml-5 mr-2" />
                 {item.category}
