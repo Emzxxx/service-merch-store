@@ -55,13 +55,13 @@
                         <!-- Name Sorting Options -->
                         {#if showNameOptions}
                             <div class="absolute rounded-md top-[5px] left-[98%] z-50 flex flex-col bg-white shadow-md w-[100px] h-[70px] pt-1.5 whitespace-nowrap">
-                                <div class="hover:bg-[#D9D9D9] w-full h-[30px]">
+                                <div class="hover:bg-[#D9D9D9] w-full h-[30px] {selectedNameSort === 'name-asc' ? 'bg-[#D9D9D9]' : ''}">
                                     <button class="pl-3 w-full text-left" style="font-family: 'Inter', sans-serif; font-weight: 400; color: #707070; font-size: 14px;"
                                     onclick={() => selectedNameSort = "name-asc"}>
                                         A - Z
                                     </button>
                                 </div>
-                                <div class="hover:bg-[#D9D9D9] w-full h-[30px]">
+                                <div class="hover:bg-[#D9D9D9] w-full h-[30px] {selectedNameSort === 'name-desc' ? 'bg-[#D9D9D9]' : ''}">
                                     <button class="pl-3 w-full text-left" style="font-family: 'Inter', sans-serif; font-weight: 400; color: #707070; font-size: 14px;"
                                     onclick={() => selectedNameSort = "name-desc"}>
                                         Z - A
@@ -85,13 +85,13 @@
                         <!-- Price Sorting Options -->
                         {#if showPriceOptions}
                             <div class="absolute rounded-md top-[5px] left-[98%] z-50 flex flex-col bg-white shadow-md w-[100px] h-[70px] pt-1.5 whitespace-nowrap">
-                                <div class="hover:bg-[#D9D9D9] w-full h-[30px]">
+                                <div class="hover:bg-[#D9D9D9] w-full h-[30px] {selectedPriceSort === 'price-asc' ? 'bg-[#D9D9D9]' : ''}">
                                     <button class="w-full text-left pl-3" style="font-family: 'Inter', sans-serif; font-weight: 400; color: #707070; font-size: 14px;"
                                     onclick={() => selectedPriceSort = "price-asc"}>
                                         Low - High
                                     </button>
                                 </div>
-                                <div class="hover:bg-[#D9D9D9] w-full h-[30px]">
+                                <div class="hover:bg-[#D9D9D9] w-full h-[30px] {selectedPriceSort === 'price-desc' ? 'bg-[#D9D9D9]' : ''}">
                                     <button class="w-full text-left pl-3" style="font-family: 'Inter', sans-serif; font-weight: 400; color: #707070; font-size: 14px;"
                                     onclick={() => selectedPriceSort = "price-desc"}>
                                         High - Low
