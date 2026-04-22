@@ -1,9 +1,62 @@
 <script lang="ts">
-import { supabase } from '$lib/supabaseClient';
+	import { page } from '$app/state';
+	import placeholder from '$lib/components/Card/placeholder.svg';
+	import VerticalGallery from '$lib/components/ProductDetail/VerticalGallery.svelte';
+	import MainDisplay from '$lib/components/ProductDetail/MainDisplay.svelte';
+	import ProductSidebar from '$lib/components/ProductDetail/ProductSidebar.svelte';
 
-console.log(supabase)
+	const images = [placeholder, placeholder, placeholder, placeholder];
+	let selectedImage = $state(images[0]);
+	let quantity = $state(1);
 
+	const productName = $derived.by(() => {
+		const slug = page.params.slug ?? 'product-name';
+		return slug
+			.split('-')
+			.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+			.join(' ');
+	});
+
+	function incrementQuantity() {
+		quantity += 1;
+	}
+
+	function decrementQuantity() {
+		quantity = Math.max(1, quantity - 1);
+	}
 </script>
 
-<h1>This is the ProductPage</h1>
-<p>TODO</p>
+<div class="product-layout">
+	<VerticalGallery {images} {selectedImage} onSelect={(image) => (selectedImage = image)} />
+
+	<MainDisplay
+		image={selectedImage}
+		description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Product details and variant notes can go here."
+	/>
+
+	<ProductSidebar
+		name={productName}
+		price={100}
+		{quantity}
+		onIncrement={incrementQuantity}
+		onDecrement={decrementQuantity}
+	/>
+</div>
+
+<style>
+	.product-layout {
+		max-width: 1100px;
+		margin: 2rem auto;
+		padding: 0 1rem;
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) 18rem;
+		gap: 1.75rem;
+		align-items: start;
+	}
+
+	@media (max-width: 1100px) {
+		.product-layout {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
