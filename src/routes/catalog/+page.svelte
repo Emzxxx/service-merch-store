@@ -59,7 +59,7 @@
 
 	<div class="grid grid-cols-4 px-5 mx-5">
 		{#each sortedProducts as product (product.name)}
-			<Card image={product.image} price={product.price} name={product.name} />
+			<Card id={product.id} image={product.image} price={product.price} name={product.name} />
 		{/each}
 	</div>
 </div>

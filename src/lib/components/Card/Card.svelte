@@ -2,7 +2,8 @@
     import placeholder from "./placeholder.svg";
     import { goto } from "$app/navigation";
 
-    let { image, price, name } = $props<{
+    let { id, image, price, name } = $props<{
+        id: number;
         image: string | null; // path to image in Supabase
         price: number;
         name: string;
@@ -27,7 +28,7 @@
 
     <button 
         class=" w-2/3 mx-auto mt-auto text-sm px-auto py-1 border border-gray-300 text-gray-700 rounded-full hover:bg-black hover:text-white transition-colors"
-        onclick={() => goto(`/product/${encodeURIComponent(name)}`)} // change accordingly
+        onclick={() => goto(`/product/${encodeURIComponent(id.toString())}`)} // change accordingly
         >
         Buy
     </button>

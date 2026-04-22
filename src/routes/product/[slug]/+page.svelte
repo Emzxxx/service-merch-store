@@ -4,21 +4,19 @@
 	import VerticalGallery from '$lib/components/ProductDetail/VerticalGallery.svelte';
 	import MainDisplay from '$lib/components/ProductDetail/MainDisplay.svelte';
 	import ProductSidebar from '$lib/components/ProductDetail/ProductSidebar.svelte';
+	import type { Product } from "$lib/types.js";
 
+	let { data } = $props<{ data: { product: Product | null } }>();
 	const images = [placeholder, placeholder, placeholder, placeholder];
 	let selectedImage = $state(images[0]);
 	let quantity = $state(1);
 
-	const productName = $derived.by(() => {
-		const slug = page.params.slug ?? 'product-name';
-		return slug
-			.split('-')
-			.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-			.join(' ');
-	});
+	const product = $derived(data.product);
 
 	function incrementQuantity() {
-		quantity += 1;
+		if (quantity < product.stock_amount) {
+			quantity += 1;
+		}
 	}
 
 	function decrementQuantity() {
@@ -35,8 +33,8 @@
 	/>
 
 	<ProductSidebar
-		name={productName}
-		price={100}
+		name={product.name}
+		price={product.price}
 		{quantity}
 		onIncrement={incrementQuantity}
 		onDecrement={decrementQuantity}

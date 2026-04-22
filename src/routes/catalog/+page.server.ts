@@ -10,9 +10,11 @@ export async function load(): Promise<{
 		supabase
 		.from('Variant')
 		.select(`
+			id,
 			ImageLink,
 			SellingPrice,
 			VariantName,
+			StockAmount,
 			Products!inner(
 				id,
 				Category!inner(
@@ -56,10 +58,12 @@ export async function load(): Promise<{
 			: product?.Category;
 
 		return {
+			id: variant.id ?? 0,
 			image: variant.ImageLink ?? null,
 			price: Number(variant.SellingPrice) || 0,
 			name: variant.VariantName ?? 'Unnamed Variant',
-			category: category?.Category ?? 'No Category'
+			category: category?.Category ?? 'No Category',
+			stock_amount: variant.StockAmount ?? 0
 		};
 	});
 
