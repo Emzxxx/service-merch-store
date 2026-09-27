@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div class="w-full max-w-6xl mx-auto px-4 py-8 bg-white">
+<div class="w-full max-w-6xl mx-auto px-4 py-3 bg-white">
 	<div class="relative flex items-center">
 		<!-- Left Arrow -->
 		<button
