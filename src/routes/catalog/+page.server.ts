@@ -11,7 +11,7 @@ export async function load(): Promise<{
 		.from('Variant')
 		.select(`
 			id,
-			ImageLink,
+			ImagePath,
 			SellingPrice,
 			VariantName,
 			StockAmount,
@@ -59,7 +59,7 @@ export async function load(): Promise<{
 
 		return {
 			id: variant.id ?? 0,
-			image: variant.ImageLink ?? null,
+			image: getUrl(variant.ImagePath) ?? null,
 			price: Number(variant.SellingPrice) || 0,
 			name: variant.VariantName ?? 'Unnamed Variant',
 			category: category?.Category ?? 'No Category',
@@ -73,4 +73,13 @@ export async function load(): Promise<{
 	}));
 
 	return { products, categories };
+}
+
+function getUrl(path:string|null) {
+	if (!path) {
+		return null
+	}
+	const {data} = supabase.storage.from("Product Pictures").getPublicUrl(path)
+	//console.log(data.publicUrl)
+	return data.publicUrl
 }
