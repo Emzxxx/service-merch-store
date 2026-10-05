@@ -1,6 +1,10 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
+@theme {
+  --color-csi-blue: #00C6D7;
+}
+
 button {
     @apply cursor-pointer;
 }
