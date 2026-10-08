@@ -32,7 +32,7 @@
 		</button>
 
 		<!-- Carousel Window -->
-		<div class="w-full overflow-hidden">
+		<div class="w-full overflow-hidden min-h-100">
 			<div
 				class="flex transition-transform duration-300 ease-out -mx-2"
 				style="transform: translateX(-{(pageNum * 100) / cardsPerPage}%);"

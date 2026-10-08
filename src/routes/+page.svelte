@@ -17,7 +17,7 @@
         },
         {
             id: 3,
-            category: "Treessss"
+            category: "Tresssss"
         }
     ])
 
@@ -27,7 +27,7 @@
             image: null,
 			price: 100, 
 			name: "RANDOM MERCH THINGY 1", 
-            category: 'Sticker', 
+            category: 'Tresssss', 
             stock_amount: 1, 
 		},
 		{
@@ -35,7 +35,7 @@
             image: null,
 			price: 100, 
 			name: "RANDOM MERCH THINGY 2", 
-            category: 'Sticker', 
+            category: 'Tresssss', 
             stock_amount: 1, 
 		},
 		{
@@ -43,7 +43,7 @@
             image: null,
 			price: 100, 
 			name: "RANDOM MERCH THINGY 3", 
-            category: 'Sticker', 
+            category: 'Dosss', 
             stock_amount: 1, 
 		},
 		{
@@ -51,7 +51,7 @@
             image: null,
 			price: 100, 
 			name: "RANDOM MERCH THINGY 4", 
-            category: 'Sticker', 
+            category: 'Uno', 
             stock_amount: 1, 
 		},
 		{
@@ -59,7 +59,7 @@
             image: null,
 			price: 100, 
 			name: "RANDOM MERCH THINGY 5", 
-            category: 'Sticker', 
+            category: 'Dosss', 
             stock_amount: 1, 
 		},
         {
@@ -67,7 +67,7 @@
             image: null,
 			price: 100, 
 			name: "RANDOM MERCH THINGY 6", 
-            category: 'Sticker', 
+            category: 'Uno', 
             stock_amount: 1, 
 		},
 		{
@@ -75,12 +75,18 @@
             image: null,
 			price: 100, 
 			name: "RANDOM MERCH THINGY 7", 
-            category: 'Sticker', 
+            category: 'Dosss', 
             stock_amount: 1, 
 		}
 	]);
-
-    let selectedCategory = $state(0) // ID of the Category (use to filter products!)
+    
+    let allCategory: Category = {id: 0, category: "All"}
+    let selectedCategory = $state(allCategory)
+    let selectedProducts = $derived(
+        exampleProducts.filter((product) => {
+            return product.category == selectedCategory.category
+        })
+    );
 
 </script>
 
@@ -92,9 +98,9 @@
     <div class="flex items-center justify-between border-b-2 border-gray-300">
     <nav class="flex space-x-8" >
         <button
-            onclick={() => (selectedCategory = 0)}
+            onclick={() => (selectedCategory = allCategory)}
             class="whitespace-nowrap text-sm font-medium transition-colors relative pb-3 px-2
-                {selectedCategory === 0
+                {selectedCategory.id === 0
                 ? 'text-csi-blue font-semibold border-b-3 border-csi-blue'
                 : 'text-gray-500 hover:text-gray-700'}"
         >
@@ -102,9 +108,9 @@
         </button>
         {#each exampleCategories as category}
             <button
-                onclick={() => (selectedCategory = category.id)}
+                onclick={() => (selectedCategory = category)}
                 class="whitespace-nowrap text-sm font-medium transition-colors relative pb-3 px-2
-                    {selectedCategory === category.id
+                    {selectedCategory.id === category.id
                     ? 'text-csi-blue font-semibold border-b-3 border-csi-blue'
                     : 'text-gray-500 hover:text-gray-700'}"
             >
@@ -120,4 +126,9 @@
         <img src={RightArrow} class="w-4 h-4 align-middle opacity-60" alt="Button" />
 	</a>
 </div></div>
+
+{#if selectedCategory.id == 0}
 <Carousel products={exampleProducts}></Carousel>
+{:else}
+<Carousel products={selectedProducts}></Carousel>
+{/if}
