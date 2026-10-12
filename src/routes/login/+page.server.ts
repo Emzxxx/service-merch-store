@@ -1,4 +1,3 @@
-
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
@@ -9,7 +8,7 @@ export const actions: Actions = {
         await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-            redirectTo: `${url.origin}/auth/callback`
+            redirectTo: `${url.origin}/login/callback`
             }
         });
 
@@ -26,7 +25,7 @@ export const actions: Actions = {
             message: 'Google sign-in did not return a redirect URL.'
         });
         }
-
+        
         redirect(303, data.url);
 }
 };

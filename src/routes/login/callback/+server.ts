@@ -36,5 +36,6 @@ export const GET: RequestHandler = async ({ url, locals : { supabase } }) => {
     }
 
     // redirect back to homepage after a successful login
+    console.log("\n\n\nLogin Successful\n\n\n");
     redirect(303, '/'); 
 };
