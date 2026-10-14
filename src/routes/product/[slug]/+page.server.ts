@@ -9,6 +9,8 @@ export async function load({ params }): Promise<{ product: Product | null }> {
         .select(`
             id,
             ImageLink,
+            ImagePath,
+            ImageGallery,
             SellingPrice,
             VariantName,
             StockAmount,
@@ -31,11 +33,30 @@ export async function load({ params }): Promise<{ product: Product | null }> {
         return { product: null };
     }
 
+    const imagePath = variantData?.[0]?.ImagePath;
+    const imageGallery = variantData?.[0]?.ImageGallery;
+    const galleryLinks: string[] = [];
+
+    let imageUrl = null;
+
+    if (imagePath) {
+        const { data } = supabase.storage.from('Product Pictures').getPublicUrl(imagePath);
+        imageUrl = data.publicUrl;
+    }
+
+    if (imageGallery && imageGallery.length > 0) {
+        imageGallery.forEach(path => {
+            const { data } = supabase.storage.from('Product Pictures').getPublicUrl(path);
+            galleryLinks.push(data.publicUrl);
+        });
+    }
+
     //console.log('RAW FIRST ROW:', JSON.stringify(data?.[0], null, 2));
 
     const product: Product | null = {
         id: variantData?.[0]?.id ?? 0,
-        image: variantData?.[0]?.ImageLink ?? null,
+        image: variantData?.[0]?.ImageLink ?? imageUrl,
+        gallery: galleryLinks,
         price: Number(variantData?.[0]?.SellingPrice) || 0,
         name: variantData?.[0]?.VariantName ?? 'Unnamed Variant',
         category: variantData?.[0]?.Products?.[0]?.Category?.[0]?.Category ?? 'No Category',
