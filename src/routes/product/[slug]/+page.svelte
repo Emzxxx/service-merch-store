@@ -7,8 +7,8 @@
 	import type { Product } from "$lib/types.js";
 
 	let { data } = $props<{ data: { product: Product | null } }>();
-	const images = [placeholder, placeholder, placeholder, placeholder];
-	let selectedImage = $state(images[0]);
+	const images = $derived(data.product.gallery);
+	let selectedImage = $derived(data.product.image);
 	let quantity = $state(1);
 
 	const product = $derived(data.product);
