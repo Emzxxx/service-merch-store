@@ -12,14 +12,14 @@
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
 <!-- Specific values may be subject to change-->
-<header class="flex items-center px-6 py-4 gap-6 bg-gray-100 shadow-lg/25 sticky top-0" >  
-	<div class="flex-1">
+<header class="flex items-center px-6 py-4 gap-6 bg-white shadow-lg/25 sticky top-0 z-100" >  
+	<div class="flex-[0.7]">
 		<a href='/'>
 			<img src={CSI_Logo} alt="CSI Logo" />
 		</a>
 	</div>
 
-	<div class="flex-4 flex justify-center py-2">
+	<div class="flex-3 flex justify-center py-2">
 		<div class="flex items-center bg-gray-200 rounded-full px-6 pr-9 py-3 w-full max-w-2x1">
 			<input
 			type="text"
