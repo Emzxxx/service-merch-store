@@ -2,6 +2,15 @@ import { supabase } from '$lib/supabaseClient';
 import type { PageLoad } from './$types';
 import type { Category, Product } from '$lib/types';
 
+function getUrl(path:string|null) {
+	if (!path) {
+		return null
+	}
+	const {data} = supabase.storage.from("Product Pictures").getPublicUrl(path)
+	//console.log(data.publicUrl)
+	return data.publicUrl
+}
+
 export const load: PageLoad = async ({ setHeaders }) => {
 	setHeaders({
 		'cache-control': 'public, max-age=300, stale-while-revalidate=600'
@@ -12,7 +21,7 @@ export const load: PageLoad = async ({ setHeaders }) => {
 			.from('Variant')
 			.select(`
 				id,
-				ImageLink,
+				ImagePath,
 				SellingPrice,
 				VariantName,
 				StockAmount,
@@ -48,7 +57,8 @@ export const load: PageLoad = async ({ setHeaders }) => {
 
 		return {
 			id: variant.id,
-			image: variant.ImageLink ?? null,
+			image: getUrl(variant.ImagePath) ?? null,
+			gallery: [],
 			price: Number(variant.SellingPrice) || 0,
 			name: variant.VariantName ?? 'Unnamed Variant',
 			category: category?.Category ?? 'No Category',
@@ -60,6 +70,8 @@ export const load: PageLoad = async ({ setHeaders }) => {
 		id: category.id,
 		category: category.Category
 	}));
+
+	console.log(products);
 
 	return { products, categories };
 };
