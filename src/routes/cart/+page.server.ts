@@ -66,26 +66,50 @@ export const actions:Actions =  {
         const user = (await supabase.auth.getUser()).data.user
 
         if(!user) {
-            return fail(401, "User is not logged in")
+            return fail(401, {message: "User is not logged in"})
         }
         
         const data = await request.formData()
-        const variant_id = Number(data.get("variant_id")?.toString() ?? '-1')
-        const count = Number(data.get("count")?.toString() ?? '-1')
+        let variant_id, count
 
-        const {error:insert_error} = await supabase.from("ShoppingCartItems").insert(
+        try{ 
+            ({variant_id,count} = validateAddCart(data))
+        } catch(error) {
+            return fail(500, {message: "Parsing or Out of Bounds Error"})
+        }
+        const {data: variant_data, error:query_error} = await supabase.from("Variant")
+            .select(`StockAmount`)
+            .eq("id",variant_id)
+            .eq("Active",true)
+        
+        if (query_error) {
+            return fail (501, {message: query_error.message})
+        }
+
+        let [{StockAmount}] = variant_data
+
+        if (!variant_data) {
+            return fail(501, {message: "Variant not found or is not active"})
+        } else if(StockAmount < count) {
+            return fail(501, {message: "Variant Stocks too low"})
+        }
+
+        const {data: insert_data, error:insert_error} = await supabase.from("ShoppingCartItems").insert(
             {
                 VariantID: variant_id,
                 Count: count,
                 UserID: user.id
             }
-        )
+        ).select("ID")
 
         if(insert_error) {
             return fail(501, {message: insert_error.message})
         }
         else {
-            return {success: true}
+            const [{ID}] = insert_data
+            console.log(ID)
+            
+            return {success: true, ID}
         }
 
     },
@@ -94,4 +118,21 @@ export const actions:Actions =  {
     
     editCartEntry: () => {}
 
+}
+
+function validateAddCart(data: FormData) {
+    let variant_id = -1
+    let count = -1
+    try {variant_id = Number(data.get("variant_id")?.toString() ?? '-1')
+    count = Number(data.get("count")?.toString() ?? '-1')}
+
+    catch (error) {
+        throw new Error("Parsing Error");
+        
+    }
+
+    if (variant_id <= 0 || count <= 0){
+        throw new Error("Variant ID or count out of bounds")}
+    
+    return {variant_id, count}
 }
