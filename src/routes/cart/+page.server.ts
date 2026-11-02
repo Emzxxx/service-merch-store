@@ -112,7 +112,30 @@ export const actions:Actions =  {
 
     },
 
-    deleteCartEntry: () => {},
+    deleteCartEntry: async ({locals: {supabase}, request}) => {
+        const user = (await supabase.auth.getUser()).data.user
+
+        if(!user) {
+            return fail(401, {message: "User is not logged in"})
+        }
+
+        const data = await request.formData()
+        let id
+        try {
+            id = Number(data.get("id")?.toString() ?? '-1')
+        } catch(error) {
+            return fail(500, {message: "Parsing Error"})
+        }
+
+        const {error: delete_error} =await  supabase.from("ShoppingCartItems").
+        delete().
+        eq('ID',id)
+        
+        if(delete_error) {
+            return fail(500, {message: delete_error.message})
+        }
+        return {success: true}
+    },
     
     editCartEntry: () => {}
 
