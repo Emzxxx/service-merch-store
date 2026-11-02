@@ -75,25 +75,23 @@ export const actions:Actions =  {
         try{ 
             ({variant_id,count} = validateAddCart(data))
         } catch(error) {
-            return fail(500, {message: "Parsing or Out of Bounds Error"})
+
+            if(error instanceof Error){
+                return fail(500, {message: "Parsing or Out of Bounds Error"})}
+            else {
+                return fail(500, {message: "Unexpected Error"})
+            }
         }
-        const {data: variant_data, error:query_error} = await supabase.from("Variant")
-            .select(`StockAmount`)
-            .eq("id",variant_id)
-            .eq("Active",true)
         
-        if (query_error) {
-            return fail (501, {message: query_error.message})
-        }
-
-        let [{StockAmount}] = variant_data
-
-        if (!variant_data) {
-            return fail(501, {message: "Variant not found or is not active"})
-        } else if(StockAmount < count) {
-            return fail(501, {message: "Variant Stocks too low"})
-        }
-
+        // try {
+        //     await validateStocks(variant_id,count)
+        // } catch (error) {
+        //     if (error instanceof Error) {
+        //         return fail(500, {message: error.message})
+        //     } else {
+        //         return fail(500, {message: "Unexpected Error"})
+        //     }
+        // }
         const {data: insert_data, error:insert_error} = await supabase.from("ShoppingCartItems").insert(
             {
                 VariantID: variant_id,
@@ -120,7 +118,10 @@ export const actions:Actions =  {
 
 }
 
-function validateAddCart(data: FormData) {
+function validateAddCart(data: FormData): {
+ variant_id: number;
+ count: number;
+} {
     let variant_id = -1
     let count = -1
     try {variant_id = Number(data.get("variant_id")?.toString() ?? '-1')
@@ -135,4 +136,24 @@ function validateAddCart(data: FormData) {
         throw new Error("Variant ID or count out of bounds")}
     
     return {variant_id, count}
+}
+
+async function validateStocks(variant_id: number, count: number) {
+    const {data: variant_data, error:query_error} = await supabase.from("Variant")
+            .select(`StockAmount`)
+            .eq("id",variant_id)
+            .eq("Active",true)
+        
+        if (query_error) {
+            return fail (501, {message: query_error.message})
+        }
+
+        let [{StockAmount}] = variant_data
+
+        if (!variant_data) {
+            throw new Error("Variant not found or is not active")
+        } else if(StockAmount < count) {
+            throw new Error("Variant Stocks too low")
+        }
+        return true
 }
