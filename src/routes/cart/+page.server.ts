@@ -137,6 +137,37 @@ export const actions:Actions =  {
         return {success: true}
     },
     
+    deleteCartEntries: async({locals: {supabase}, request}) => {
+        const user = (await supabase.auth.getUser()).data.user
+
+        if(!user) {
+            return fail(401, {message: "User is not logged in"})
+        }
+
+        const data = await request.formData()
+
+        //format of input is a Number array binded to a hidden input 
+        //let toggled = $state<Number[]>([]) 
+        //<input type="hidden" name="cartIDs" bind:value={toggled}>
+    
+        //{#each data.cartItems as c}
+        //<input type="checkbox" value={c.id} bind:group={toggled}>
+        //{/each}
+        
+        const cartIDs_string = data.get("cartIDs")?.toString() ?? '[]'
+        const cartIDs = cartIDs_string.split(',')
+
+        const {error:delete_error} = await supabase.from("ShoppingCartItems").delete().in("ID",cartIDs)
+
+        //according to Supabase docs, if |cartIDs| > |user's cart entries|, the delete still returns a success
+        //i.e. extra IDs are skipped, or ignored.
+        if(delete_error) {
+            return fail(500, {message: delete_error.message})
+        }
+        return {success:true}
+
+
+    },
     editCartEntry: () => {}
 
 }
