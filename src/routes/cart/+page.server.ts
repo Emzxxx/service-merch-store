@@ -16,6 +16,7 @@ export async function load({ locals }): Promise<{
         locals.supabase
         .from('ShoppingCartItems')
         .select(`
+            ID,
             Count,
             Variant!inner (
                 VariantName,
@@ -38,6 +39,7 @@ export async function load({ locals }): Promise<{
             : cartItem.Variant;
 
         return {
+            id: cartItem.ID ?? -1,
             count: cartItem.Count ?? 0,
             image: getUrl(variant.ImagePath) ?? null,
             price: Number(variant.SellingPrice) || 0,
