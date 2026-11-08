@@ -13,7 +13,8 @@ export type Category = {
     category: string;
 }
 
-export type CartItem = {
+export type CartItem =   {
+    id: number,
     count: number;
     name: string;
     price: number;
