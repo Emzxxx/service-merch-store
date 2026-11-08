@@ -168,7 +168,33 @@ export const actions:Actions =  {
 
 
     },
-    editCartEntry: () => {}
+    editCartEntry: async ({locals: {supabase}, request}) => {
+        const user = (await supabase.auth.getUser()).data.user
+
+        if(!user) {
+            return fail(401, {message: "User is not logged in"})
+        }
+
+        const data = await request.formData()
+        let id, count
+        try {
+            id = Number(data.get("id")?.toString() ?? '-1')
+            count = Number(data.get("count")?.toString() ?? '-1')
+        } catch(error) {
+            return fail(500, {message: "Parsing Error"})
+        }
+
+        if (count <=0 || id <= 0) {
+            return fail(500, {mesage: "Value Out of Bounds"})
+        }
+
+        const {error} = await supabase.from("ShoppingCartItems").update({Count: count}).eq("ID",id)
+        if(error) {
+            return fail(500, {message:error.message})
+
+        }
+        return {success:true}
+    }
 
 }
 
