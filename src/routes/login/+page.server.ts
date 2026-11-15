@@ -1,5 +1,15 @@
 import { fail, redirect } from '@sveltejs/kit';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals: { supabase } }) => {
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    throw redirect(303, '/logout');
+  }
+  return;
+
+};
 
 // TODO: Assumes we have defined `supabase` in locals in hooks already
 export const actions: Actions = {
